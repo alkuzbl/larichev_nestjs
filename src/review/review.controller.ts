@@ -16,6 +16,7 @@ import { ReviewService } from './review.service';
 import { INVALID_ID_ERROR, REVIEW_NOT_FOUND } from './review.constans';
 import { JwrAuthGuard } from '../auth/guards/jwt.guard';
 import { UserEmail } from '../decorators/user-email.decorator';
+import { IdValidationPipe } from '../pipes/id-validation.pipe';
 
 @Controller('review')
 export class ReviewController {
@@ -24,12 +25,12 @@ export class ReviewController {
   @UsePipes(new ValidationPipe())
   @Post('create')
   async create(@Body() dto: CreateReviewDto) {
-    return this.reviewService.create(dto);
+    return await this.reviewService.create(dto);
   }
 
   @UseGuards(JwrAuthGuard)
   @Delete(':id')
-  async delete(@Param('id') id: string) {
+  async delete(@Param('id', IdValidationPipe) id: string) {
     const deletedDoc = await this.reviewService.delete(id);
     if (!deletedDoc) {
       throw new HttpException(REVIEW_NOT_FOUND, HttpStatus.NOT_FOUND);
@@ -37,7 +38,7 @@ export class ReviewController {
   }
 
   @Get('byProduct/:productId')
-  async getByProduct(@Param('productId') productId: string) {
+  async getByProduct(@Param('productId', IdValidationPipe) productId: string) {
     const products = await this.reviewService.findByProductId(productId);
     if (!products) {
       throw new HttpException(INVALID_ID_ERROR, HttpStatus.NOT_FOUND);

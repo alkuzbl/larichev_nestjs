@@ -35,20 +35,36 @@ describe('AuthController (e2e)', () => {
       });
   });
 
-  it('/auth/login (POST) - failed', () => {
+  it('/auth/login (POST) - fail password', () => {
     return request(app.getHttpServer())
       .post('/auth/login')
       .send({ ...loginDto, password: '12345678' })
-      .expect(401);
+      .expect(401, {
+        statusCode: 401,
+        message: 'Не правильный пароль',
+        error: 'Unauthorized',
+      });
   });
 
-  it('/auth/login (POST) - failed, {message: PASSWORD_LENGTH_ERROR}', () => {
+  it('/auth/login (POST) - fail password, {message: PASSWORD_LENGTH_ERROR}', () => {
     return request(app.getHttpServer())
       .post('/auth/login')
       .send({ ...loginDto, password: '1' })
-      .expect(400)
-      .then(({ body }: request.Response) => {
-        expect(body.message[0]).toBe(PASSWORD_LENGTH_ERROR);
+      .expect(400, {
+        statusCode: 400,
+        message: ['Минимальная длина пароля 3 символа'],
+        error: 'Bad Request',
+      });
+  });
+
+  it('/auth/login (POST) - fail email', () => {
+    return request(app.getHttpServer())
+      .post('/auth/login')
+      .send({ ...loginDto, login: 'ass@ass.ru' })
+      .expect(401, {
+        statusCode: 401,
+        message: 'Пользователь с таким email не найден',
+        error: 'Unauthorized',
       });
   });
 

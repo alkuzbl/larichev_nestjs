@@ -1,8 +1,8 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   HttpCode,
+  NotFoundException,
   Post,
   UsePipes,
   ValidationPipe,
@@ -10,7 +10,6 @@ import {
 import { AuthDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
 import { ALREADY_REGISTERED_ERROR } from './auth.constans';
-import { UserEmail } from '../decorators/user-email.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -21,7 +20,7 @@ export class AuthController {
   async register(@Body() dto: AuthDto) {
     const oldUser = await this.authService.findUser(dto.login);
     if (oldUser) {
-      throw new BadRequestException(ALREADY_REGISTERED_ERROR);
+      throw new NotFoundException(ALREADY_REGISTERED_ERROR);
     }
 
     return this.authService.createUser(dto);
