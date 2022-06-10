@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -15,16 +16,20 @@ import { FindTopPageDto } from './dto/find-top-page.dto';
 import { IdValidationPipe } from '../pipes/id-validation.pipe';
 import { TopPageService } from './top-page.service';
 import { CreateTopPageDto } from './dto/create-top-page.dto';
+import { TOP_PAGE_NOT_FOUND } from './top-page.constants';
+import { JwrAuthGuard } from '../auth/guards/jwt.guard';
 
 @Controller('top-page')
 export class TopPageController {
   constructor(private readonly topPageService: TopPageService) {}
 
+  @UseGuards(JwrAuthGuard)
   @Post('create')
   async create(@Body() dto: CreateTopPageDto) {
     return await this.topPageService.create(dto);
   }
 
+  @UseGuards(JwrAuthGuard)
   @Get(':id')
   async get(@Param('id', IdValidationPipe) id: string) {
     const topPage = await this.topPageService.findById(id);
@@ -43,7 +48,8 @@ export class TopPageController {
     return topPage;
   }
 
-  @Patch('id')
+  @UseGuards(JwrAuthGuard)
+  @Patch(':id')
   async update(
     @Param('id', IdValidationPipe) id: string,
     @Body() dto: CreateTopPageDto,
@@ -55,6 +61,7 @@ export class TopPageController {
     return updatedTopPage;
   }
 
+  @UseGuards(JwrAuthGuard)
   @Delete(':id')
   async delete(@Param('id', IdValidationPipe) id: string) {
     const deletedTopPage = await this.topPageService.deleteById(id);
@@ -65,7 +72,7 @@ export class TopPageController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Post()
+  @Post('find')
   async find(@Body() dto: FindTopPageDto) {
     return this.topPageService.findByCategory(dto.firstCategory);
   }
