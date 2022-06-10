@@ -8,8 +8,9 @@ import {
   Param,
   Patch,
   Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
-import { TopPageModel } from './top-page.model';
 import { FindTopPageDto } from './dto/find-top-page.dto';
 import { IdValidationPipe } from '../pipes/id-validation.pipe';
 import { TopPageService } from './top-page.service';
@@ -33,10 +34,19 @@ export class TopPageController {
     return topPage;
   }
 
+  @Get('byAlias/:alias')
+  async getByAlias(@Param('alias') alias: string) {
+    const topPage = await this.topPageService.findByAlias(alias);
+    if (!topPage) {
+      throw new NotFoundException(TOP_PAGE_NOT_FOUND);
+    }
+    return topPage;
+  }
+
   @Patch('id')
   async update(
     @Param('id', IdValidationPipe) id: string,
-    @Body() dto: TopPageModel,
+    @Body() dto: CreateTopPageDto,
   ) {
     const updatedTopPage = await this.topPageService.updateById(id, dto);
     if (!updatedTopPage) {
@@ -53,7 +63,10 @@ export class TopPageController {
     }
   }
 
+  @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post()
-  async find(@Body() dto: FindTopPageDto) {}
+  async find(@Body() dto: FindTopPageDto) {
+    return this.topPageService.findByCategory(dto.firstCategory);
+  }
 }
