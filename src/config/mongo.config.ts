@@ -10,21 +10,23 @@ export const getMongoConfig = async (
   };
 };
 
-const getMongoString = (configService: ConfigService) =>
-  'mongodb://' +
-  configService.get('MONGO_HOST') +
-  ':' +
-  configService.get('MONGO_PORT');
-
 // const getMongoString = (configService: ConfigService) =>
 //   'mongodb://' +
-//   configService.get('MONGO_LOGIN') +
-//   ':' +
-//   configService.get('MONGO_PASSWORD') +
-//   '@' +
-//   configService.get('MONGO_AUTH_DB') +
+//   configService.get('MONGO_HOST') +
 //   ':' +
 //   configService.get('MONGO_PORT');
+
+const getMongoString = (configService: ConfigService) =>
+  'mongodb://' +
+  configService.get('MONGO_LOGIN') +
+  ':' +
+  configService.get('MONGO_PASSWORD') +
+  '@' +
+  configService.get('MONGO_HOST') +
+  ':' +
+  configService.get('MONGO_PORT') +
+  '/' +
+  configService.get('MONGO_AUTH_DB');
 
 const getMongoOptions = () => ({
   useUnifiedTopology: true,
