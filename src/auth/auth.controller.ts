@@ -19,8 +19,6 @@ export class AuthController {
   @Post('register')
   async register(@Body() dto: AuthDto) {
     const oldUser = await this.authService.findUser(dto.login);
-    console.log('click', oldUser);
-
     if (oldUser) {
       throw new NotFoundException(ALREADY_REGISTERED_ERROR);
     }
