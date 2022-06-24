@@ -19,7 +19,9 @@ import { ProductService } from './product.service';
 import { PRODUCT_NOT_FOUND_ERROR } from './product.constans';
 import { IdValidationPipe } from '../pipes/id-validation.pipe';
 import { JwrAuthGuard } from '../auth/guards/jwt.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Product')
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}

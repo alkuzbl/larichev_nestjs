@@ -4,7 +4,9 @@ import { ConfigService } from '@nestjs/config';
 import { subDays, format } from 'date-fns';
 import { Builder } from 'xml2js';
 import { CATEGORY_URL } from './sitemap.constants';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('SiteMap')
 @Controller('sitemap')
 export class SitemapController {
   domain: string;

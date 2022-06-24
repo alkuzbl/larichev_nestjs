@@ -17,7 +17,9 @@ import { INVALID_ID_ERROR, REVIEW_NOT_FOUND } from './review.constans';
 import { JwrAuthGuard } from '../auth/guards/jwt.guard';
 import { IdValidationPipe } from '../pipes/id-validation.pipe';
 import { TelegramService } from '../telegram/telegram.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Review')
 @Controller('review')
 export class ReviewController {
   constructor(
