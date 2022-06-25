@@ -18,7 +18,9 @@ import { TopPageService } from './top-page.service';
 import { CreateTopPageDto } from './dto/create-top-page.dto';
 import { TOP_PAGE_NOT_FOUND } from './top-page.constants';
 import { JwrAuthGuard } from '../auth/guards/jwt.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('TopPage')
 @Controller('top-page')
 export class TopPageController {
   constructor(private readonly topPageService: TopPageService) {}
