@@ -19,7 +19,7 @@ import { ProductService } from './product.service';
 import { PRODUCT_NOT_FOUND_ERROR } from './product.constans';
 import { IdValidationPipe } from '../pipes/id-validation.pipe';
 import { JwrAuthGuard } from '../auth/guards/jwt.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Product')
 @Controller('product')
@@ -32,6 +32,10 @@ export class ProductController {
     return await this.productService.create(dto);
   }
 
+  @ApiParam({
+    name: 'íd',
+    required: true,
+  })
   @UseGuards(JwrAuthGuard)
   @Get(':id')
   async get(@Param('id', IdValidationPipe) id: string) {
