@@ -1,4 +1,4 @@
-import { IsNumber } from 'class-validator';
+import { IsDate, IsNumber } from 'class-validator';
 
 export class HhDataDto {
   @IsNumber()
@@ -12,4 +12,7 @@ export class HhDataDto {
 
   @IsNumber()
   seniorSalary: number;
+
+  @IsDate()
+  updatedAt: Date;
 }

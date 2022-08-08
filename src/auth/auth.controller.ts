@@ -11,9 +11,11 @@ import { AuthDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
 import { ALREADY_REGISTERED_ERROR } from './auth.constans';
 import {
+  ApiBody,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -38,7 +40,6 @@ export class AuthController {
     if (oldUser) {
       throw new NotFoundException(ALREADY_REGISTERED_ERROR);
     }
-
     return this.authService.createUser(dto);
   }
 

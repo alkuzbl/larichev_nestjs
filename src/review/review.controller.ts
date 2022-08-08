@@ -14,7 +14,7 @@ import {
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewService } from './review.service';
 import { INVALID_ID_ERROR, REVIEW_NOT_FOUND } from './review.constans';
-import { JwrAuthGuard } from '../auth/guards/jwt.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { IdValidationPipe } from '../pipes/id-validation.pipe';
 import { TelegramService } from '../telegram/telegram.service';
 import { ApiTags } from '@nestjs/swagger';
@@ -41,7 +41,7 @@ export class ReviewController {
     return await this.telegramService.sendMessage(message);
   }
 
-  @UseGuards(JwrAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id', IdValidationPipe) id: string) {
     const deletedDoc = await this.reviewService.delete(id);

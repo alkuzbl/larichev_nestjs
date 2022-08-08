@@ -7,7 +7,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { JwrAuthGuard } from '../auth/guards/jwt.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { FileElementResponse } from './dto/file-element.response';
 import { FilesService } from './files.service';
 import { MFile } from './mfile.class';
@@ -20,7 +20,7 @@ export class FilesController {
 
   @Post('upload')
   @HttpCode(200)
-  @UseGuards(JwrAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('files'))
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
